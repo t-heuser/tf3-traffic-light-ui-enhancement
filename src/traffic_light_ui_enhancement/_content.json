@@ -1,0 +1,10 @@
+{
+    "archives": null,
+    "files": [
+        "traffic_light_ui_enhancement/phase_names.gs.lua",
+        "traffic_light_ui_enhancement/phase_names.script.tl",
+        "traffic_light_ui_enhancement/ui_enhancement.css.lua",
+        "traffic_light_ui_enhancement/ui_enhancement.res.lua",
+        "traffic_light_ui_enhancement/ui_enhancement.script.tl"
+    ]
+}
