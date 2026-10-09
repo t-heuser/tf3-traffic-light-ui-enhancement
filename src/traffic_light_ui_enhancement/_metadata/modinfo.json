@@ -5,7 +5,7 @@
             "role": "CREATOR"
         }
     ],
-    "description": "Improves the traffic light phase editor at crossings:\n- Move phases up and down instead of deleting and re-adding them\n- Insert a new phase directly below any existing phase\n- Rename phases; the name is shown in the phase list\n- Duration and Min. Duration use whole-number input fields with +1/-1 buttons instead of sliders\n\nKnown limitation: phase names are not kept when you save and reload a game; they reset to the default \"Phase #n\". Phase order, durations and all other settings are saved normally, since they use the game's own traffic light data.",
+    "description": "Improves the traffic light phase editor at crossings:\n- Move phases up and down instead of deleting and re-adding them\n- Insert a new phase directly below any existing phase\n- Rename phases; the name is shown in the phase list and saved with your game\n- Duration and Min. Duration use whole-number input fields with +1/-1 buttons instead of sliders\n\nRemoving the mod: phase names are lost, everything else stays. Phase order, durations and all other settings use the game's own traffic light data.",
     "name": "Traffic Light UI enhancer",
     "summary": "Reorder, insert and rename traffic light phases, and set durations with exact whole-number inputs.",
     "tags": [

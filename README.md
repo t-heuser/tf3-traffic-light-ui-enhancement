@@ -14,10 +14,10 @@ A Transport Fever 3 mod that improves the traffic light phase editor at crossing
 
 ## Known limitations
 
-- **Phase names are lost on save/reload.** On load, the game removes the mod's game script state
-  (`Removing entity … for GameScript …/phase_names.gs which is no longer available` in `stdout.txt`).
-  Root cause not yet found. Phase order, durations and all other settings are stored in the game's own
-  traffic light data and are saved normally.
+- **Phase names are lost when the mod is removed.** Names are stored in the savegame by the mod's game script.
+  Loading a save without the mod drops that state (`Removing entity … for GameScript …/phase_names.gs which is no
+  longer available` in `stdout.txt`); re-adding the mod does not bring the names back. Phase order, durations and
+  all other settings are stored in the game's own traffic light data and stay intact.
 
 ## Installation
 
