@@ -79,7 +79,17 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 			return {}
 		end
 		local gameScript = api.engine.getComponent(scriptEntity, api.type.ComponentType.GAME_SCRIPT) as Engine.Component.GameScript<PhaseNamesState>
-		local s = gameScript and gameScript.state
+		if not gameScript then
+			return {}
+		end
+		-- read only this node's entry natively instead of copying the whole state (`.state`) every step;
+		-- same pattern as the base game's town_cargo_util.getTownCargoState
+		local stateNative = gameScript.state_native
+		if stateNative then
+			local namesNative = stateNative:findPath({"nodes", tostring(param.keyEntity)}) as NativeLuaTable
+			return namesNative and namesNative:asTable() as {string} or {}
+		end
+		local s = gameScript.state
 		local names = s and s.nodes and s.nodes[tostring(param.keyEntity)]
 		return names and table_util.copy(names) or {}
 	end, nil, function(a : {string}, b : {string}) : boolean
