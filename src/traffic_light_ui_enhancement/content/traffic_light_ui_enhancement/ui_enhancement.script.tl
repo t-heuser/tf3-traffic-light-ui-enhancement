@@ -969,7 +969,13 @@ local UiEnhancementContent = react.RegisterRecipe("TlueDoubleSlipSwitchContent",
 			},
 		}
 	end
-	return react.CallOriginalRecipe(DoubleSlipSwitchContent, param)
+	-- CallOriginalRecipe yields a recipe node, not a layout, so it needs a layout wrapper
+	return builtin.BoxLayout {
+		orientation = builtin.type.Orientation.Vertical,
+		children = {
+			react.CallOriginalRecipe(DoubleSlipSwitchContent, param)
+		},
+	}
 end)
 
 local ui_enhancement = {}
