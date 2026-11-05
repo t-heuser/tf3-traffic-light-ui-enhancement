@@ -24,6 +24,14 @@ local record PhaseNamesState
 	nodes : {string : {string}}
 end
 
+-- traffic_light_ui_enhancement: copy & paste of phase setups, see phase_clipboard.tl (keep this record in sync with it)
+local record PhaseClipboard
+	phaseCount : function() : integer
+	copy : function(node : Engine.Entity, lanes : {{number, number, number, number}}, crosswalks : {Engine.Entity}, states : {Engine.Component.TrafficLightState}, names : {string}) : string
+	paste : function(node : Engine.Entity, lanes : {{number, number, number, number}}, crosswalks : {Engine.Entity}) : {Engine.Component.TrafficLightState}, {string}, string
+end
+local phase_clipboard = ug_require "traffic_light_ui_enhancement_1::/traffic_light_ui_enhancement/phase_clipboard.tl" as PhaseClipboard
+
 -- traffic_light_ui_enhancement: whole-number input field with +1 / -1 buttons and mouse wheel, clamped to [min, max].
 -- A recipe of its own so it can have its own mouse listener (the base Slider it replaces reacted to the wheel).
 local record IntInputParam
@@ -118,7 +126,7 @@ local IntInput = react.RegisterRecipe("TlueIntInput", function(param : IntInputP
 			builtin.Button{
 				meta = {
 					enabled = enabled and shown < max,
-					tooltip = _("+1 s"),
+					tooltip = _("tlue_plus_one_second"),
 					class = "tlue-step",
 				},
 				content = builtin.ImageView{
@@ -131,7 +139,7 @@ local IntInput = react.RegisterRecipe("TlueIntInput", function(param : IntInputP
 			builtin.Button{
 				meta = {
 					enabled = enabled and shown > min,
-					tooltip = _("-1 s"),
+					tooltip = _("tlue_minus_one_second"),
 					class = "tlue-step",
 				},
 				content = builtin.ImageView{
@@ -427,6 +435,27 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 		commit(newBaseNodeState)
 	end
 
+	-- traffic_light_ui_enhancement: copy & paste of the phase setup (see phase_clipboard.tl)
+	local pasteMessage = react.useState(nil) as ReactStateT<string>
+
+	local function copySetup()
+		pasteMessage:set(phase_clipboard.copy(param.keyEntity, stateData:old().allLaneConnections, stateData:old().crosswalks,
+			stateData:old().trafficLightConfig.states, currentPhaseNames()))
+	end
+
+	local function pasteSetup()
+		local states, names, message = phase_clipboard.paste(param.keyEntity, stateData:old().allLaneConnections, stateData:old().crosswalks)
+		pasteMessage:set(message)
+		if not states then return end
+
+		local newBaseNodeState = table_util.copy(stateData:old())
+		newBaseNodeState.trafficLightConfig.states = states
+		commit(newBaseNodeState)
+
+		setPhaseNames(names, #states)
+		selectedIndex:set(1)
+	end
+
 	-- traffic_light_ui_enhancement: whole-number input field with +1 / -1 buttons and mouse wheel, clamped to [min, max]
 	local function makeIntInput(value : integer, min : integer, max : integer, enabled : boolean, onChange : function(integer)) : TreeNodeId
 		return IntInput({ value = value, min = min, max = max, enabled = enabled, onChange = onChange })
@@ -520,7 +549,7 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 									builtin.TextView{
 										-- traffic_light_ui_enhancement: show the custom name if set
 										text = getPhaseName(k) ~= ""
-											and lang_util.format(_("#{number}: {name}"), {
+											and lang_util.format(_("tlue_phase_title_named"), {
 												number = tostring(k),
 												name = getPhaseName(k),
 											})
@@ -540,7 +569,7 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 									builtin.Button{
 										meta = {
 											enabled = k > 1,
-											tooltip = _("Move Phase Up"),
+											tooltip = _("tlue_move_phase_up"),
 										},
 										content = builtin.ImageView{
 											path = "::/gui/camera_tool/icons/up_thin.tga",
@@ -552,7 +581,7 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 									builtin.Button{
 										meta = {
 											enabled = k < #stateData:old().trafficLightConfig.states,
-											tooltip = _("Move Phase Down"),
+											tooltip = _("tlue_move_phase_down"),
 										},
 										content = builtin.ImageView{
 											path = "::/gui/camera_tool/icons/down_thin.tga",
@@ -563,7 +592,7 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 									},
 									builtin.Button{
 										meta = {
-											tooltip = _("Insert Phase Below"),
+											tooltip = _("tlue_insert_phase_below"),
 										},
 										content = builtin.ImageView{
 											path = "::/gui/line_vehicle_mgmt/icons/add.tga",
@@ -668,7 +697,7 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 										meta = {
 											class = "font-scale-body, duration",
 										},
-										text = _("Name:")
+										text = _("tlue_phase_name_label")
 									},
 									builtin.TextInputField{
 										meta = {
@@ -933,7 +962,7 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 						meta = {
 							class = "secondary",
 						},
-						onClick = function() 
+						onClick = function()
 							local newBaseNodeState = table_util.copy(stateData:old())
 							
 							newBaseNodeState.trafficLightConfig.states = {}
@@ -951,6 +980,50 @@ local TrafficLightConfigWidget = react.RegisterRecipe("TlueTrafficLightConfigWid
 						}
 					},
 				},
+			} or nil,
+			-- traffic_light_ui_enhancement: copy & paste the phase setup to another intersection, in a row of their own
+			-- so the row above keeps its width
+			currentState:old() and builtin.BoxLayout {
+				orientation = builtin.type.Orientation.Horizontal,
+				children = {
+					builtin.Button{
+						meta = {
+							class = "secondary",
+							tooltip = _("tlue_copy_tooltip"),
+						},
+						onClick = copySetup,
+						content = builtin.TextView{
+							meta = {
+								class = "font-scale-body",
+							},
+							text = _("Copy"),
+						}
+					},
+					builtin.Button{
+						meta = {
+							class = "secondary",
+							enabled = phase_clipboard.phaseCount() > 0,
+							tooltip = phase_clipboard.phaseCount() > 0
+								and lang_util.format(_("tlue_paste_tooltip"), { count = tostring(phase_clipboard.phaseCount()) })
+								or _("tlue_paste_tooltip_empty"),
+						},
+						onClick = pasteSetup,
+						content = builtin.TextView{
+							meta = {
+								class = "font-scale-body",
+							},
+							text = _("Paste"),
+						}
+					},
+					gui_react_util.makeHorizontalSpacer(),
+				},
+			} or nil,
+			-- traffic_light_ui_enhancement: result of the last copy / paste
+			(currentState:old() and pasteMessage:old()) and builtin.TextView{
+				meta = {
+					class = "font-scale-annotation, tlue-message",
+				},
+				text = pasteMessage:old(),
 			} or nil,
 			trafficLightTypeWidget,
 		},

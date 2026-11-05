@@ -3,7 +3,19 @@
     "incompatibilities": null,
     "modId": "traffic_light_ui_enhancement_1",
     "options": null,
-    "params": null,
+    "params": [
+        {
+            "key": "debug_log",
+            "name": "tlue_param_debug_log_name",
+            "tooltip": "tlue_param_debug_log_tooltip",
+            "uiType": "Button",
+            "values": [
+                "tlue_param_off",
+                "tlue_param_on"
+            ],
+            "defaultIndex": 0
+        }
+    ],
     "postRunScript": {
         "fileName": ""
     },

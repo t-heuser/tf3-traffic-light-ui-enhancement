@@ -1,0 +1,42 @@
+{
+    "en": {
+        "tlue_move_phase_up": "Move Phase Up",
+        "tlue_move_phase_down": "Move Phase Down",
+        "tlue_insert_phase_below": "Insert Phase Below",
+        "tlue_copy_tooltip": "Copy the phases of this intersection",
+        "tlue_paste_tooltip": "Replace the phases with the copied ones ({count})",
+        "tlue_paste_tooltip_empty": "Copy the phases of another intersection first",
+        "tlue_copied": "Copied phases: {count}",
+        "tlue_pasted": "Pasted phases: {count}",
+        "tlue_pasted_unmatched": "Pasted phases: {count}. Lanes without a match, red in every phase: {unmatched}",
+        "tlue_paste_layout_differs": "Cannot paste: the intersection layout differs (number of roads).",
+        "tlue_param_debug_log_name": "Debug log",
+        "tlue_param_debug_log_tooltip": "Write diagnostic lines to stdout.txt (e.g. how copy & paste matched the roads of an intersection).",
+        "tlue_param_off": "Off",
+        "tlue_param_on": "On",
+        "tlue_plus_one_second": "+1 s",
+        "tlue_minus_one_second": "-1 s",
+        "tlue_phase_name_label": "Name:",
+        "tlue_phase_title_named": "#{number}: {name}"
+    },
+    "de": {
+        "tlue_move_phase_up": "Phase nach oben verschieben",
+        "tlue_move_phase_down": "Phase nach unten verschieben",
+        "tlue_insert_phase_below": "Phase darunter einfügen",
+        "tlue_copy_tooltip": "Phasen dieser Kreuzung kopieren",
+        "tlue_paste_tooltip": "Phasen durch die kopierten ersetzen ({count})",
+        "tlue_paste_tooltip_empty": "Kopiere zuerst die Phasen einer anderen Kreuzung",
+        "tlue_copied": "Kopierte Phasen: {count}",
+        "tlue_pasted": "Eingefügte Phasen: {count}",
+        "tlue_pasted_unmatched": "Eingefügte Phasen: {count}. Fahrspuren ohne Gegenstück, in jeder Phase rot: {unmatched}",
+        "tlue_paste_layout_differs": "Einfügen nicht möglich: Die Kreuzung hat eine andere Anzahl an Straßen.",
+        "tlue_param_debug_log_name": "Debug-Protokoll",
+        "tlue_param_debug_log_tooltip": "Schreibt Diagnosezeilen in stdout.txt (z. B. wie Kopieren & Einfügen die Straßen einer Kreuzung zugeordnet hat).",
+        "tlue_param_off": "Aus",
+        "tlue_param_on": "Ein",
+        "tlue_plus_one_second": "+1 s",
+        "tlue_minus_one_second": "-1 s",
+        "tlue_phase_name_label": "Name:",
+        "tlue_phase_title_named": "#{number}: {name}"
+    }
+}

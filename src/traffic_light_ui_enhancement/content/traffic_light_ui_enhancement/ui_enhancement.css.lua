@@ -2,6 +2,7 @@
 -- forked recipe (selectors match recipe names, so the base rules do not apply to TlueTrafficLightConfigWidget).
 local color_util = require "::/gui/main/color_util.tl"
 local ssu = require "::/gui/main/stylesheetutil.lua"
+local entity_window_sizes = require "::/gui/entity_window/entity_window_sizes.lua"
 
 function data()
 	local result = {}
@@ -128,6 +129,12 @@ function data()
 	a("R::TlueTrafficLightConfigWidget TextInputField!phase-name", {
 		minSize = {200, -1},
 		gravity = {-1, 0.5},
+	})
+
+	-- traffic_light_ui_enhancement: copy / paste result message wraps instead of being clipped at the window edge
+	a("R::TlueTrafficLightConfigWidget TextView!tlue-message", {
+		textAutoWrap = true,
+		maxSize = { entity_window_sizes.InnerCardWidth, -1 },
 	})
 
 	return result
