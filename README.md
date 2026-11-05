@@ -15,6 +15,8 @@ A Transport Fever 3 mod that improves the traffic light phase editor at crossing
   another. Lanes are matched by road direction, so the target may be rotated or have different lane numbering, but it
   needs the same number of roads. Unmatched lanes and crosswalks stay red. The clipboard is kept until the game is
   restarted.
+- **Fixed "Set All to Red":** only the phase whose button was clicked turns red. In the base game it changed the
+  selected phase and overwrote every other phase with a copy of the clicked one.
 
 ## Settings
 

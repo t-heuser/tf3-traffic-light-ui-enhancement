@@ -1,9 +1,13 @@
 {
     "archives": null,
     "files": [
+        "traffic_light_ui_enhancement/int_input.tl",
+        "traffic_light_ui_enhancement/lane_overlay.tl",
+        "traffic_light_ui_enhancement/phase_card.tl",
         "traffic_light_ui_enhancement/phase_clipboard.tl",
         "traffic_light_ui_enhancement/phase_names.gs.lua",
         "traffic_light_ui_enhancement/phase_names.script.tl",
+        "traffic_light_ui_enhancement/phase_names_ui.tl",
         "traffic_light_ui_enhancement/ui_enhancement.css.lua",
         "traffic_light_ui_enhancement/ui_enhancement.res.lua",
         "traffic_light_ui_enhancement/ui_enhancement.script.tl"

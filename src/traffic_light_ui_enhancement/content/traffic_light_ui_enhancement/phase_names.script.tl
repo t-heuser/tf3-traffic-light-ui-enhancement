@@ -1,6 +1,6 @@
 -- Stores user-defined traffic light phase names in the savegame.
 -- The engine's TrafficLightState has no name field, so names live here, keyed by node entity and phase index.
--- The GUI (ui_enhancement.script.tl) sends the complete name list of a node after every rename/move/insert/remove.
+-- The GUI (phase_names_ui.tl, used by ui_enhancement.script.tl) sends the complete name list of a node after every rename/move/insert/remove.
 
 local record PhaseNamesState
 	nodes : {string : {string}} -- tostring(node entity) -> names by phase index ("" = unnamed)
